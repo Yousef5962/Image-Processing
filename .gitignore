@@ -2,5 +2,6 @@
 *.exe
 *.txt
 *.pdf
+*.ppm
 tempCodeRunnerFile.cpp
 .idea/
