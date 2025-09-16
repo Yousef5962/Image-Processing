@@ -380,21 +380,6 @@ Image applyBlur(const Image &input)
         }
     }
 
-    // Copy border pixels unchanged
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            if (y == 0 || y == height - 1 || x == 0 || x == width - 1)
-            {
-                for (int c = 0; c < channels; c++)
-                {
-                    output(y, x, c) = input(y, x, c);
-                }
-            }
-        }
-    }
-
     return output;
 }
 
