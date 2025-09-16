@@ -185,8 +185,10 @@ Image convertToGrayscale(const Image &input)
     //   Get R, G, B values from input image
     //   Calculate gray = 0.299*R + 0.587*G + 0.114*B
     //   Set output(y, x, 0) = gray
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
             int R = input(y, x, 0);
             int G = input(y, x, 1);
             int B = input(y, x, 2);
@@ -253,13 +255,13 @@ Image flipVertical(const Image &input)
     // For each pixel and each channel:
     //   output(height-1-y, x, c) = input(y, x, c)
 
-     for (int y = 0; y < height; y++)
+    for (int y = 0; y < height; y++)
     {
         for (int x = 0; x < width; x++)
         {
             for (int c = 0; c < channels; c++)
             {
-               output(height-1-y, x, c) = input(y, x, c);
+                output(height - 1 - y, x, c) = input(y, x, c);
             }
         }
     }
@@ -359,12 +361,39 @@ Image applyBlur(const Image &input)
     int channels = input.getChannels();
     Image output(width, height, channels);
 
-    // TODO: Implement this function
-    // For each pixel (from y=1 to height-2, x=1 to width-2) and each channel:
-    //   sum = 0
-    //   For each neighbor (ky from -1 to 1, kx from -1 to 1):
-    //     sum += input(y+ky, x+kx, c)
-    //   output(y, x, c) = sum / 9
+    for (int y = 1; y < height - 1; y++)
+    {
+        for (int x = 1; x < width - 1; x++)
+        {
+            for (int c = 0; c < channels; c++)
+            {
+                int sum = 0;
+                for (int ky = -1; ky <= 1; ky++)
+                {
+                    for (int kx = -1; kx <= 1; kx++)
+                    {
+                        sum += input(y + ky, x + kx, c);
+                    }
+                }
+                output(y, x, c) = sum / 9;
+            }
+        }
+    }
+
+    // Copy border pixels unchanged
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (y == 0 || y == height - 1 || x == 0 || x == width - 1)
+            {
+                for (int c = 0; c < channels; c++)
+                {
+                    output(y, x, c) = input(y, x, c);
+                }
+            }
+        }
+    }
 
     return output;
 }
